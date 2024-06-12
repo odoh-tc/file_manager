@@ -5,10 +5,30 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     envVars:
-      MYSQL_USER: { fromFile: .env }
-      MYSQL_PASSWORD: { fromFile: .env }
-      MYSQL_DB_NAME: { fromFile: .env }
-      MYSQL_HOST: my-mysql-service
+      - key: MYSQL_USER
+        value: myuser
+      - key: MYSQL_PASSWORD
+        value: mypassword
+      - key: MYSQL_ROOT_PASSWORD
+        value: my-secret-pw
+      - key: MYSQL_HOST
+        value: db
+      - key: MYSQL_PORT
+        value: "3306"
+      - key: MYSQL_DB_NAME
+        value: mydatabase
+      - key: MYSQL_TEST_DB_NAME
+        value: test_mydatabase
+      - key: TESTING
+        value: "false"
+      - key: SECRET_KEY
+        value: 61102c8a034548ebd7ed5990626e2435aeff8c68
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: BASE_URL
+        value: http://localhost:8000
 
   - type: web
     name: my-mysql-service
@@ -16,6 +36,13 @@ services:
     plan: free
     dockerCommand: mysql:5.7
     envVars:
-      MYSQL_USER: { fromFile: .env }
-      MYSQL_PASSWORD: { fromFile: .env }
-      MYSQL_DB_NAME: { fromFile: .env }
+      - key: MYSQL_USER
+        value: myuser
+      - key: MYSQL_PASSWORD
+        value: mypassword
+      - key: MYSQL_ROOT_PASSWORD
+        value: my-secret-pw
+      - key: MYSQL_DB_NAME
+        value: mydatabase
+      - key: MYSQL_TEST_DB_NAME
+        value: test_mydatabase
