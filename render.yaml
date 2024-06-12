@@ -20,7 +20,7 @@ services:
       - path: /app
         volume: api_data
 
-  - type: private-service
+  - type: addon
     name: my-mysql-service
     env: docker
     plan: free
