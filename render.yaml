@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: app
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: MYSQL_USER
+        fromFile: .env
+      - key: MYSQL_PASSWORD
+        fromFile: .env
+      - key: MYSQL_DATABASE
+        fromFile: .env
+      - key: MYSQL_HOST
+        value: my-mysql-service
+    ports:
+      - port: 8000
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    mounts:
+      - path: /app
+        volume: api_data
+
+  - type: private-service
+    name: my-mysql-service
+    env: docker
+    plan: free
+    dockerCommand: mysql:5.7
+    envVars:
+      - key: MYSQL_USER
+        fromFile: .env
+      - key: MYSQL_PASSWORD
+        fromFile: .env
+      - key: MYSQL_DATABASE
+        fromFile: .env
+    mounts:
+      - path: /var/lib/mysql
+        volume: mq_data
+    healthCheckPath: /healthcheck # Adjust to actual health check
