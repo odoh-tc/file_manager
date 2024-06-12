@@ -1,9 +1,19 @@
+databases:
+  - name: my-mysql-service
+    databaseName: mydatabase
+    user: myuser
+    plan: free
+    region: frankfurt
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
+    postgresMajorVersion: "16"
 services:
   - type: web
     name: app
-    env: docker
+    runtime: docker
+    repo: https://github.com/odoh-tc/file_uploader
     plan: free
-    dockerfilePath: ./Dockerfile
     envVars:
       - key: MYSQL_USER
         value: myuser
@@ -29,20 +39,7 @@ services:
         value: "30"
       - key: BASE_URL
         value: http://localhost:8000
-
-  - type: web
-    name: my-mysql-service
-    env: docker
-    plan: free
-    dockerCommand: mysql:5.7
-    envVars:
-      - key: MYSQL_USER
-        value: myuser
-      - key: MYSQL_PASSWORD
-        value: mypassword
-      - key: MYSQL_ROOT_PASSWORD
-        value: my-secret-pw
-      - key: MYSQL_DB_NAME
-        value: mydatabase
-      - key: MYSQL_TEST_DB_NAME
-        value: test_mydatabase
+    region: frankfurt
+    dockerContext: .
+    dockerfilePath: ./Dockerfile
+version: "1"
