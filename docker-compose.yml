@@ -9,7 +9,7 @@ services:
         fromFile: .env
       - key: MYSQL_PASSWORD
         fromFile: .env
-      - key: MYSQL_DATABASE
+      - key: MYSQL_DB_NAME
         fromFile: .env
       - key: MYSQL_HOST
         value: my-mysql-service
@@ -20,7 +20,7 @@ services:
       - path: /app
         volume: api_data
 
-  - type: database
+  - type: web
     name: my-mysql-service
     env: docker
     plan: free
@@ -30,10 +30,9 @@ services:
         fromFile: .env
       - key: MYSQL_PASSWORD
         fromFile: .env
-
-      - key: MYSQL_DATABASE
+      - key: MYSQL_DB_NAME
         fromFile: .env
     mounts:
       - path: /var/lib/mysql
         volume: mq_data
-    healthCheckPath: /healthcheck # Adjust to actual health check
+    healthCheckPath: /healthcheck
