@@ -1,38 +1,46 @@
-services:
-  - type: web
-    name: app
-    env: docker
-    plan: free
-    dockerfilePath: ./Dockerfile
-    envVars:
-      - key: MYSQL_USER
-        fromFile: .env
-      - key: MYSQL_PASSWORD
-        fromFile: .env
-      - key: MYSQL_DB_NAME
-        fromFile: .env
-      - key: MYSQL_HOST
-        value: my-mysql-service
-    ports:
-      - port: 8000
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
-    mounts:
-      - path: /app
-        volume: api_data
+version: "3.8"
 
-  - type: web
-    name: my-mysql-service
-    env: docker
-    plan: free
-    dockerCommand: mysql:5.7
-    envVars:
-      - key: MYSQL_USER
-        fromFile: .env
-      - key: MYSQL_PASSWORD
-        fromFile: .env
-      - key: MYSQL_DB_NAME
-        fromFile: .env
-    mounts:
-      - path: /var/lib/mysql
-        volume: mq_data
-    healthCheckPath: /healthcheck
+volumes:
+  api_data:
+  mq_data:
+
+services:
+  db:
+    container_name: mysql
+    image: mysql:5.7
+    env_file:
+      - ./.env
+    volumes:
+      - mq_data:/var/lib/mysql # Change to /var/lib/mysql for the official MySQL image
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "${MYSQL_USER}",
+          "-p${MYSQL_PASSWORD}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    container_name: app
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - api_data:/app # Changed to /app to match typical application volume mount points
+    restart: always
