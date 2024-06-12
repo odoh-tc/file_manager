@@ -4,6 +4,24 @@ This application provides a backend solution for uploading, managing, and sharin
 
 ---
 
+## Table of Contents
+
+- [File Uploader API](#file-uploader-api)
+  - [Table of Contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
+  - [Features](#features)
+  - [Installation](#installation)
+    - [Running Locally](#running-locally)
+      - [Using Docker Compose](#using-docker-compose)
+      - [Using Virtual Environment](#using-virtual-environment)
+      - [Configuration](#configuration)
+        - [Generating the Secret Key](#generating-the-secret-key)
+        - [Usage](#usage)
+    - [Contributing](#contributing)
+    - [License](#license)
+
+---
+
 ## Prerequisites
 
 Before you start, make sure you have the following prerequisites:
