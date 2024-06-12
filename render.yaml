@@ -3,7 +3,6 @@ services:
     name: app
     env: docker
     plan: free
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
     dockerfilePath: ./Dockerfile
 
   - type: web
