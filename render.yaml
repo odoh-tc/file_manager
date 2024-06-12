@@ -4,9 +4,25 @@ services:
     env: docker
     plan: free
     dockerfilePath: ./Dockerfile
+    envVars:
+      - key: MYSQL_USER
+        fromFile: .env
+      - key: MYSQL_PASSWORD
+        fromFile: .env
+      - key: MYSQL_DB_NAME
+        fromFile: .env
+      - key: MYSQL_HOST
+        value: my-mysql-service
 
   - type: web
     name: my-mysql-service
     env: docker
     plan: free
     dockerCommand: mysql:5.7
+    envVars:
+      - key: MYSQL_USER
+        fromFile: .env
+      - key: MYSQL_PASSWORD
+        fromFile: .env
+      - key: MYSQL_DB_NAME
+        fromFile: .env
