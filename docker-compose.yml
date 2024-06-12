@@ -30,6 +30,7 @@ services:
         fromFile: .env
       - key: MYSQL_PASSWORD
         fromFile: .env
+
       - key: MYSQL_DATABASE
         fromFile: .env
     mounts:
