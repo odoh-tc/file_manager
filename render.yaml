@@ -7,15 +7,9 @@ services:
     ports:
       - port: 8000
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
-    volumes:
-      - name: api_data
-        path: /app
 
   - type: web
     name: my-mysql-service
     env: docker
     plan: free
     dockerCommand: mysql:5.7
-    volumes:
-      - name: mq_data
-        path: /var/lib/mysql
